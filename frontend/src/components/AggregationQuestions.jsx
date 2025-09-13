@@ -95,7 +95,8 @@ const AggregationQuestions = () => {
       setResponseTime(null);
 
       try {
-         const response = await fetch(`http://localhost:3000${customUrl}`);
+         const baseURL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+         const response = await fetch(`${baseURL}${customUrl}`);
          const endTime = Date.now();
          const duration = endTime - startTime;
 
@@ -146,7 +147,8 @@ const AggregationQuestions = () => {
 
    const copyUrl = async (url) => {
       try {
-         await navigator.clipboard.writeText(`http://localhost:3000${url}`);
+         const baseURL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+         await navigator.clipboard.writeText(`${baseURL}${url}`);
       } catch (error) {
          console.error('Failed to copy URL:', error);
       }
@@ -329,7 +331,7 @@ const AggregationQuestions = () => {
                                  <h4 className="font-semibold">{endpoint.name}</h4>
                               </div>
                               <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
-                                 http://localhost:3000{endpoint.url}
+                                 {import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'}{endpoint.url}
                               </code>
                               <p className="text-sm text-gray-600 mt-2">{endpoint.description}</p>
                            </div>

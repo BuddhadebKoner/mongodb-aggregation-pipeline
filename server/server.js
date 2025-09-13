@@ -26,7 +26,17 @@ const connectDB = async () => {
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+   origin: [
+      'http://localhost:5173', // Vite dev server
+      'http://localhost:3000', // Alternative local
+      'https://*.vercel.app',  // Vercel deployments
+      process.env.FRONTEND_URL // Production frontend URL
+   ].filter(Boolean), // Remove undefined values
+   credentials: true,
+   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+   allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json({ limit: '10mb' })); // Increased limit for bulk data loading
 
 // Basic route
