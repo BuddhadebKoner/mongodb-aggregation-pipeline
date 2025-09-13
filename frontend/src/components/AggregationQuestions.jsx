@@ -290,6 +290,9 @@ const AggregationQuestions = () => {
                   <div className="flex gap-2">
                      <Badge variant="outline" className="px-2 py-1">GET</Badge>
                      <div className="flex-1 flex gap-2">
+                        <span className="text-sm text-gray-600 flex items-center">
+                           {import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'}
+                        </span>
                         <Input
                            placeholder="/questions/active-users"
                            value={customUrl}
