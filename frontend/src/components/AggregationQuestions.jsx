@@ -28,6 +28,38 @@ const AggregationQuestions = () => {
          url: '/questions/active-users',
          description: 'Get all active users using aggregation pipeline',
          service: aggregationService.getActiveUsers
+      },
+      {
+         id: 'user-count-by-gender',
+         name: 'User Count by Gender',
+         method: 'GET',
+         url: '/questions/get-user-count-by-gender',
+         description: 'Get user count grouped by gender using aggregation pipeline',
+         service: aggregationService.getUserCountByGender
+      },
+      {
+         id: 'average-age',
+         name: 'Average Age of Users',
+         method: 'GET',
+         url: '/questions/get-average-age',
+         description: 'Get average age of users using aggregation pipeline',
+         service: aggregationService.getAverageAge
+      },
+      {
+         id: 'average-age-by-gender',
+         name: 'Average Age by Gender',
+         method: 'GET',
+         url: '/questions/get-average-age-by-gender',
+         description: 'Get average age of users grouped by gender using aggregation pipeline',
+         service: aggregationService.getAverageAgeByGender
+      },
+      {
+         id: 'most-popular-fruits',
+         name: 'Most Popular Fruits',
+         method: 'GET',
+         url: '/questions/get-most-popular-fruits',
+         description: 'Get most popular fruits among users using aggregation pipeline',
+         service: aggregationService.getMostPopularFruits
       }
    ];
 

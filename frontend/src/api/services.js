@@ -64,15 +64,43 @@ export const aggregationService = {
          throw new Error(error.response?.data?.message || 'Failed to get active users');
       }
    },
+   // question (bonus) : group based on gender and get
+   getUserCountByGender: async () => {
+      try {
+         const response = await api.get('/questions/get-user-count-by-gender');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get user count by gender');
+      }
+   },
+   // question:2 calculate average age of users
+   getAverageAge: async () => {
+      try {
+         const response = await api.get('/questions/get-average-age');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get average age');
+      }
+   },
+   // question (bonus) : get average age based on gender
+   getAverageAgeByGender: async () => {
+      try {
+         const response = await api.get('/questions/get-average-age-by-gender');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get average age by gender');
+      }
+   },
+   // question:3 get 5 most favorite fruits among users
+   getMostPopularFruits: async () => {
+      try {
+         const response = await api.get('/questions/get-most-popular-fruits');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get most popular fruits');
+      }
+   }
 
-   // Add more aggregation questions here as they are implemented
-   // Question 2: Get users by age range
-   // getUsersByAgeRange: async (minAge, maxAge) => { ... },
-
-   // Question 3: Get books by genre
-   // getBooksByGenre: async (genre) => { ... },
-
-   // etc...
 };
 
 // Utility function to parse JSON safely

@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { loadUsers, loadBooks, loadAuthors, clearAllData } from './controllers/dataController.js';
-import { getActiveUsers } from './controllers/aggregationController.js';
+import { getActiveUsers, getAverageAge, getAverageAgeByGender, getMostPopularFruits, getUserCountByGender } from './controllers/aggregationController.js';
 
 // Load environment variables
 dotenv.config();
@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
          'POST /load-books': 'Load book data',
          'POST /load-authors': 'Load author data',
          'DELETE /clear-all': 'Clear all data',
-         'GET /questions/active-users': 'Get all active users (Aggregation Practice)'
+         'GET /questions/active-users': 'Get all active users (Aggregation Practice)',
       }
    });
 });
@@ -62,6 +62,10 @@ app.delete('/clear-all', clearAllData);
 
 // Aggregation Practice Routes
 app.get('/questions/active-users', getActiveUsers);
+app.get('/questions/get-user-count-by-gender', getUserCountByGender);
+app.get('/questions/get-average-age', getAverageAge);
+app.get('/questions/get-average-age-by-gender', getAverageAgeByGender);
+app.get('/questions/get-most-popular-fruits', getMostPopularFruits);
 
 // Start server
 app.listen(PORT, () => {
