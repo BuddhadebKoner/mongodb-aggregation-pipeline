@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { loadUsers, loadBooks, loadAuthors, clearAllData } from './controllers/dataController.js';
-import { getActiveUsers, getAverageAge, getAverageAgeByGender, getMostPopularFruits, getUserCountByGender } from './controllers/aggregationController.js';
+import { getActiveUsers, getAverageAge, getAverageAgeByGender, getAverageNumberOfTagsPerUser, getAverageNumberOfTagsPerUserAlternative, getMostPopularFruits, getTopCountriesByUserCount, getUniqueEyeColors, getUserCountByGender } from './controllers/aggregationController.js';
 
 // Load environment variables
 dotenv.config();
@@ -66,6 +66,10 @@ app.get('/questions/get-user-count-by-gender', getUserCountByGender);
 app.get('/questions/get-average-age', getAverageAge);
 app.get('/questions/get-average-age-by-gender', getAverageAgeByGender);
 app.get('/questions/get-most-popular-fruits', getMostPopularFruits);
+app.get('/questions/get-top-countries-by-user-count', getTopCountriesByUserCount);
+app.get('/questions/get-unique-eye-colors', getUniqueEyeColors);
+app.get('/questions/get-average-number-of-tags-per-user', getAverageNumberOfTagsPerUser);
+app.get('/questions/get-average-number-of-tags-per-user-alternative', getAverageNumberOfTagsPerUserAlternative);
 
 // Start server
 app.listen(PORT, () => {

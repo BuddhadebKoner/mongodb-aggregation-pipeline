@@ -19,47 +19,112 @@ const AggregationQuestions = () => {
    const [customUrl, setCustomUrl] = useState('');
    const [responseTime, setResponseTime] = useState(null);
 
-   // Available endpoints
+   // Available endpoints - MongoDB Aggregation Pipeline Learning Questions
+   // Organized from basic to advanced concepts
    const endpoints = [
+      // BASIC FILTERING & PROJECTION
       {
          id: 'active-users',
-         name: 'Active Users',
+         name: '🎯 Filter Active Users',
          method: 'GET',
          url: '/questions/active-users',
-         description: 'Get all active users using aggregation pipeline',
-         service: aggregationService.getActiveUsers
+         description: 'Learn $match and $project stages - Filter documents based on conditions and select specific fields. This demonstrates the fundamental building blocks of aggregation pipelines.',
+         service: aggregationService.getActiveUsers,
+         level: 'Beginner',
+         concepts: ['$match', '$project']
       },
+
+      // BASIC GROUPING & COUNTING
       {
          id: 'user-count-by-gender',
-         name: 'User Count by Gender',
+         name: '👥 Count Users by Gender',
          method: 'GET',
          url: '/questions/get-user-count-by-gender',
-         description: 'Get user count grouped by gender using aggregation pipeline',
-         service: aggregationService.getUserCountByGender
+         description: 'Master $group stage with counting - Group documents by a field and count occurrences. Essential for generating summary statistics and understanding data distribution.',
+         service: aggregationService.getUserCountByGender,
+         level: 'Beginner',
+         concepts: ['$group', '$sum', '$project']
       },
+
+      // AGGREGATION OPERATORS
       {
          id: 'average-age',
-         name: 'Average Age of Users',
+         name: '📊 Calculate Average Age',
          method: 'GET',
          url: '/questions/get-average-age',
-         description: 'Get average age of users using aggregation pipeline',
-         service: aggregationService.getAverageAge
+         description: 'Explore $avg operator - Calculate numerical averages across your entire dataset. Learn how aggregation operators work within the $group stage.',
+         service: aggregationService.getAverageAge,
+         level: 'Beginner',
+         concepts: ['$group', '$avg']
       },
+
       {
          id: 'average-age-by-gender',
-         name: 'Average Age by Gender',
+         name: '📈 Average Age by Gender',
          method: 'GET',
          url: '/questions/get-average-age-by-gender',
-         description: 'Get average age of users grouped by gender using aggregation pipeline',
-         service: aggregationService.getAverageAgeByGender
+         description: 'Combine grouping with calculations - Group by gender and calculate average age for each group. Shows how to create meaningful analytical insights.',
+         service: aggregationService.getAverageAgeByGender,
+         level: 'Intermediate',
+         concepts: ['$group', '$avg', '$project']
       },
+
+      // UNIQUE VALUES & DISTRIBUTION
+      {
+         id: 'unique-eye-colors',
+         name: '👁️ Unique Eye Colors Distribution',
+         method: 'GET',
+         url: '/questions/get-unique-eye-colors',
+         description: 'Find unique values and their frequency - Discover all distinct values in a field and count their occurrences. Perfect for understanding data variety and distribution patterns.',
+         service: aggregationService.getUniqueEyeColors,
+         level: 'Intermediate',
+         concepts: ['$group', '$sum', '$project']
+      },
+
+      // ADVANCED: UNWIND & COMPLEX GROUPING
       {
          id: 'most-popular-fruits',
-         name: 'Most Popular Fruits',
+         name: '🍎 Top 5 Favorite Fruits',
          method: 'GET',
          url: '/questions/get-most-popular-fruits',
-         description: 'Get most popular fruits among users using aggregation pipeline',
-         service: aggregationService.getMostPopularFruits
+         description: 'Learn $unwind, $sort, and $limit - Deconstruct arrays, count elements, sort by popularity, and limit results. Essential for working with array fields and creating top-N reports.',
+         service: aggregationService.getMostPopularFruits,
+         level: 'Advanced',
+         concepts: ['$unwind', '$group', '$sort', '$limit']
+      },
+
+      {
+         id: 'top-countries-by-user-count',
+         name: '🌍 Top 5 Countries by User Count',
+         method: 'GET',
+         url: '/questions/get-top-countries-by-user-count',
+         description: 'Navigate nested objects - Access nested fields (company.location.country), group by them, and find top performers. Learn dot notation in aggregation pipelines.',
+         service: aggregationService.getTopCountriesByUserCount,
+         level: 'Advanced',
+         concepts: ['$group', '$sort', '$limit', 'nested fields']
+      },
+
+      // COMPLEX CALCULATIONS
+      {
+         id: 'average-number-of-tags-per-user',
+         name: '🏷️ Average Tags per User (Method 1)',
+         method: 'GET',
+         url: '/questions/get-average-number-of-tags-per-user',
+         description: 'Multi-stage calculation with $unwind - Unwind arrays, count per user, then calculate overall average. Demonstrates complex multi-step aggregation logic.',
+         service: aggregationService.getAverageNumberOfTagsPerUser,
+         level: 'Advanced',
+         concepts: ['$unwind', '$group', '$avg', 'multi-stage']
+      },
+
+      {
+         id: 'average-number-of-tags-per-user-alternative',
+         name: '🏷️ Average Tags per User (Method 2)',
+         method: 'GET',
+         url: '/questions/get-average-number-of-tags-per-user-alternative',
+         description: 'Alternative approach using $addFields and $size - Add calculated fields using array operators, then group. Compare different approaches to solve the same problem efficiently.',
+         service: aggregationService.getAverageNumberOfTagsPerUserAlternative,
+         level: 'Advanced',
+         concepts: ['$addFields', '$size', '$ifNull', '$avg']
       }
    ];
 
@@ -305,10 +370,11 @@ const AggregationQuestions = () => {
             <CardHeader>
                <CardTitle className="flex items-center gap-2">
                   <Globe className="h-5 w-5" />
-                  MongoDB Aggregation API Tester
+                  MongoDB Aggregation Pipeline Interactive Learning
                </CardTitle>
                <CardDescription>
-                  Test MongoDB aggregation endpoints directly. Like Postman but for your aggregation practice.
+                  Learn MongoDB aggregation pipelines through hands-on practice. Execute real queries and see how each pipeline stage works.
+                  Perfect for understanding aggregation concepts from basic filtering to advanced operations.
                </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -347,10 +413,30 @@ const AggregationQuestions = () => {
 
                {/* Predefined Endpoints */}
                <div className="space-y-3">
-                  <h3 className="font-semibold flex items-center gap-2">
-                     <Users className="h-4 w-4" />
-                     Available Aggregation Endpoints
-                  </h3>
+                  <div className="flex items-center justify-between">
+                     <h3 className="font-semibold flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        MongoDB Aggregation Pipeline Learning Questions
+                     </h3>
+                     <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                           <div className="w-2 h-2 bg-green-400 rounded"></div>
+                           <span>Beginner</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                           <div className="w-2 h-2 bg-yellow-400 rounded"></div>
+                           <span>Intermediate</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                           <div className="w-2 h-2 bg-red-400 rounded"></div>
+                           <span>Advanced</span>
+                        </div>
+                     </div>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                     Explore MongoDB aggregation pipelines through practical examples. Each question demonstrates different concepts
+                     and stages, from basic filtering to complex multi-stage operations. Execute them to see the pipeline in action!
+                  </p>
 
                   {endpoints.map(endpoint => (
                      <div key={endpoint.id} className="border rounded-lg p-4">
@@ -363,12 +449,31 @@ const AggregationQuestions = () => {
                                  >
                                     {endpoint.method}
                                  </Badge>
+                                 <Badge
+                                    variant="outline"
+                                    className={`text-xs px-2 py-1 ${endpoint.level === 'Beginner' ? 'bg-green-50 text-green-700 border-green-200' :
+                                       endpoint.level === 'Intermediate' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                                          'bg-red-50 text-red-700 border-red-200'
+                                       }`}
+                                 >
+                                    {endpoint.level}
+                                 </Badge>
                                  <h4 className="font-semibold">{endpoint.name}</h4>
                               </div>
-                              <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
+                              <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono block mb-2">
                                  {import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'}{endpoint.url}
                               </code>
-                              <p className="text-sm text-gray-600 mt-2">{endpoint.description}</p>
+                              <p className="text-sm text-gray-600 mb-2">{endpoint.description}</p>
+                              {endpoint.concepts && (
+                                 <div className="flex flex-wrap gap-1 mb-2">
+                                    <span className="text-xs text-gray-500 mr-2">Concepts:</span>
+                                    {endpoint.concepts.map((concept, idx) => (
+                                       <Badge key={idx} variant="secondary" className="text-xs px-1.5 py-0.5">
+                                          {concept}
+                                       </Badge>
+                                    ))}
+                                 </div>
+                              )}
                            </div>
                            <Button
                               onClick={() => executeEndpoint(endpoint)}

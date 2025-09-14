@@ -99,8 +99,43 @@ export const aggregationService = {
       } catch (error) {
          throw new Error(error.response?.data?.message || 'Failed to get most popular fruits');
       }
-   }
-
+   },
+   // question 4 : which country has highest number of users? drill down , top5 
+   getTopCountriesByUserCount: async () => {
+      try {
+         const response = await api.get('/questions/get-top-countries-by-user-count');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get top countries by user count');
+      }
+   },
+   // question 5 : list all the unique eye colors in the user collection
+   getUniqueEyeColors: async () => {
+      try {
+         const response = await api.get('/questions/get-unique-eye-colors');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get unique eye colors');
+      }
+   },
+   // question 6 : what is the average number of tags per user ?
+   getAverageNumberOfTagsPerUser: async () => {
+      try {
+         const response = await api.get('/questions/get-average-number-of-tags-per-user');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get average number of tags per user');
+      }
+   },
+   // question (bonus) : get what is the average number of tags per user  using addfeild and group
+   getAverageNumberOfTagsPerUserAlternative: async () => {
+      try {
+         const response = await api.get('/questions/get-average-number-of-tags-per-user-alternative');
+         return response.data;
+      } catch (error) {
+         throw new Error(error.response?.data?.message || 'Failed to get average number of tags per user (alternative)');
+      }
+   },
 };
 
 // Utility function to parse JSON safely

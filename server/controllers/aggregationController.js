@@ -244,3 +244,182 @@ export const getMostPopularFruits = async (req, res) => {
       });
    }
 };
+
+// question 4 : which country has highest number of users? drill down , top5 
+export const getTopCountriesByUserCount = async (req, res) => {
+   try {
+      console.log('🔍 Executing Aggregation Pipeline: Get Top 5 Countries by User Count')
+      // Aggregation Pipeline
+      const pipeline = [
+         {
+            $group: {
+               _id: "$company.location.country",
+               countryUserCount: {
+                  $sum: 1,
+               },
+            },
+         },
+         {
+            $sort: {
+               countryUserCount: -1,
+            },
+         },
+         {
+            $limit: 5,
+         }
+      ];
+
+      // Execute aggregation
+      const result = await User.aggregate(pipeline);
+
+      res.status(200).json({
+         success: true,
+         question: "Which country has the highest number of users? (Top 5)",
+         pipeline: pipeline,
+         totalResults: result.length,
+         data: result
+      });
+
+      console.log(`✅ Found ${result.length} countries by user count`);
+   } catch (error) {
+      console.error('❌ Error in getTopCountriesByUserCount:', error);
+      res.status(500).json({
+         success: false,
+         message: 'Error executing aggregation pipeline',
+         error: error.message
+      });
+   }
+};
+
+// question 5 : list all the unque eye colors in the user collection
+export const getUniqueEyeColors = async (req, res) => {
+   try {
+      console.log('🔍 Executing Aggregation Pipeline: Get Unique Eye Colors');
+      // Aggregation Pipeline
+      const pipeline = [
+         {
+            $group: {
+               _id: "$eyeColor",
+               count: { $sum: 1 }
+            }
+         },
+         {
+            $project: {
+               _id: 0,
+               eyeColor: "$_id",
+               count: 1
+            }
+         }
+      ];
+
+      // Execute aggregation
+      const result = await User.aggregate(pipeline);
+
+      res.status(200).json({
+         success: true,
+         question: "List all unique eye colors in the user collection",
+         pipeline: pipeline,
+         totalResults: result.length,
+         data: result
+      });
+
+      console.log(`✅ Found ${result.length} unique eye colors`);
+   } catch (error) {
+      console.error('❌ Error in getUniqueEyeColors:', error);
+      res.status(500).json({
+         success: false,
+         message: 'Error executing aggregation pipeline',
+         error: error.message
+      });
+   }
+};
+
+// question 6 : what is the average number of tags per user ? (using unwind and group)
+export const getAverageNumberOfTagsPerUser = async (req, res) => {
+   try {
+      console.log('🔍 Executing Aggregation Pipeline: Get Average Number of Tags Per User');
+      // Aggregation Pipeline
+      const pipeline = [
+         {
+            $unwind: "$tags",
+         },
+         {
+            $group: {
+               _id: "$_id",
+               numberOfTags: {
+                  $sum: 1,
+               },
+            },
+         },
+         {
+            $group: {
+               _id: null,
+               averageNumberOfTags: {
+                  $avg: "$numberOfTags",
+               },
+            },
+         },
+      ]
+
+      // Execute aggregation
+      const result = await User.aggregate(pipeline);
+      res.status(200).json({
+         success: true,
+         question: "What is the average number of tags per user?",
+         pipeline: pipeline,
+         totalResults: result.length,
+         data: result
+      });
+   } catch (error) {
+      console.error('❌ Error in getAverageNumberOfTagsPerUser:', error);
+      res.status(500).json({
+         success: false,
+         message: 'Error executing aggregation pipeline',
+         error: error.message
+      });
+   }
+}
+
+// question (bonus) : get what is the average number of tags per user  using addfeild and group
+export const getAverageNumberOfTagsPerUserAlternative = async (req, res) => {
+   try {
+      console.log('🔍 Executing Aggregation Pipeline: Get Average Number of Tags Per User (Alternative)');
+      // Aggregation Pipeline
+      const pipeline = [
+         {
+            $addFields: {
+               numberOfTags: {
+                  $size: {
+                     $ifNull: ["$tags", []],
+                  },
+               },
+            },
+         },
+         {
+            $group: {
+               _id: null,
+               averageNumbersOfTags: {
+                  $avg: "$numberOfTags",
+               },
+            },
+         },
+      ];
+
+      // Execute aggregation
+      const result = await User.aggregate(pipeline);
+      res.status(200).json({
+         success: true,
+         question: "What is the average number of tags per user? (Alternative)",
+         pipeline: pipeline,
+         totalResults: result.length,
+         data: result
+      });
+   } catch (error) {
+      console.error('❌ Error in getAverageNumberOfTagsPerUserAlternative:', error);
+      res.status(500).json({
+         success: false,
+         message: 'Error executing aggregation pipeline',
+         error: error.message
+      });
+   }
+}
