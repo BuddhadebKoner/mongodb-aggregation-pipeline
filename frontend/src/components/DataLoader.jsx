@@ -160,7 +160,8 @@ const DataLoader = () => {
                   <div className="flex gap-2">
                      <Button
                         onClick={() => handleDataLoad('users', usersData, dataService.loadUsers)}
-                        disabled={loading.users || !usersData.trim()}
+                        // disabled={loading.users || !usersData.trim()}
+                        disabled={true}
                         className="flex items-center gap-2"
                      >
                         <Upload className="h-4 w-4" />
@@ -196,7 +197,8 @@ const DataLoader = () => {
                   <div className="flex gap-2">
                      <Button
                         onClick={() => handleDataLoad('books', booksData, dataService.loadBooks)}
-                        disabled={loading.books || !booksData.trim()}
+                        // disabled={loading.books || !booksData.trim()}
+                        disabled={true}
                         className="flex items-center gap-2"
                      >
                         <Upload className="h-4 w-4" />
@@ -232,7 +234,8 @@ const DataLoader = () => {
                   <div className="flex gap-2">
                      <Button
                         onClick={() => handleDataLoad('authors', authorsData, dataService.loadAuthors)}
-                        disabled={loading.authors || !authorsData.trim()}
+                        // disabled={loading.authors || !authorsData.trim()}
+                        disabled={true}
                         className="flex items-center gap-2"
                      >
                         <Upload className="h-4 w-4" />
@@ -255,7 +258,8 @@ const DataLoader = () => {
                <div className="pt-4 border-t">
                   <Button
                      onClick={handleClearAll}
-                     disabled={loading.clear}
+                     // disabled={loading.clear}
+                     disabled={true}
                      variant="destructive"
                      className="flex items-center gap-2"
                   >

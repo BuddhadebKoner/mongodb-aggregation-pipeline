@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { dataService } from '../api/services';
-import { Database, Brain, Upload, Play, CheckCircle, AlertCircle, ArrowRight, Users, BookOpen, PenTool } from 'lucide-react';
+import { Database, Brain, Upload, Play, CheckCircle, AlertCircle, ArrowRight, Users, BookOpen, PenTool, Github, Star, GitFork, Code2 } from 'lucide-react';
 
 const Home = () => {
    const navigate = useNavigate();
@@ -34,6 +34,13 @@ const Home = () => {
          setStats({ users: 0, books: 0, authors: 0, loading: false });
       }
    };
+   const handleFeatureClick = (feature) => {
+      if (feature.isExternal) {
+         window.open(feature.route, '_blank');
+      } else {
+         navigate(feature.route);
+      }
+   };
 
    const features = [
       {
@@ -45,12 +52,22 @@ const Home = () => {
          color: 'blue'
       },
       {
-         icon: Brain,
-         title: 'Practice Questions',
-         description: 'Master aggregation pipelines with guided exercises',
-         action: 'Start Practice',
+         icon: Code2,
+         title: 'Learning Modules',
+         description: 'Explore 8 structured questions from basic filtering to advanced operations',
+         action: 'View Questions',
          route: '/practice',
-         color: 'green'
+         color: 'purple',
+         isQuestionPreview: true
+      },
+      {
+         icon: Github,
+         title: 'GitHub Repository',
+         description: 'Fork this project and practice MongoDB pipelines on your own',
+         action: 'View on GitHub',
+         route: 'https://github.com/BuddhadebKoner/mongodb-aggregation-pipeline',
+         color: 'gray',
+         isExternal: true
       }
    ];
 
@@ -74,10 +91,10 @@ const Home = () => {
             {/* Server Status */}
             <div className="flex justify-center mb-8">
                <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${serverStatus.loading
-                     ? 'bg-yellow-100 text-yellow-700'
-                     : serverStatus.connected
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-red-100 text-red-700'
+                  ? 'bg-yellow-100 text-yellow-700'
+                  : serverStatus.connected
+                     ? 'bg-green-100 text-green-700'
+                     : 'bg-red-100 text-red-700'
                   }`}>
                   {serverStatus.loading ? (
                      <>
@@ -100,34 +117,65 @@ const Home = () => {
          </div>
 
          {/* Feature Cards */}
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
                <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-200">
                   <CardHeader className="pb-4">
                      <div className="flex items-center justify-between">
-                        <div className={`p-3 rounded-full ${feature.color === 'blue' ? 'bg-blue-100' : 'bg-green-100'
+                        <div className={`p-3 rounded-full ${feature.color === 'blue' ? 'bg-blue-100' :
+                              feature.color === 'green' ? 'bg-green-100' :
+                                 feature.color === 'purple' ? 'bg-purple-100' : 'bg-gray-100'
                            }`}>
-                           <feature.icon className={`h-8 w-8 ${feature.color === 'blue' ? 'text-blue-600' : 'text-green-600'
+                           <feature.icon className={`h-8 w-8 ${feature.color === 'blue' ? 'text-blue-600' :
+                                 feature.color === 'green' ? 'text-green-600' :
+                                    feature.color === 'purple' ? 'text-purple-600' : 'text-gray-600'
                               }`} />
                         </div>
                         <Badge variant="outline" className="text-xs">
-                           {index === 0 ? 'Setup' : 'Practice'}
+                           {feature.isExternal ? 'External' :
+                              feature.isQuestionPreview ? 'Learning' :
+                                 index === 0 ? 'Setup' : 'Practice'}
                         </Badge>
                      </div>
-                     <CardTitle className="text-xl">{feature.title}</CardTitle>
-                     <CardDescription className="text-base">
+                     <CardTitle className="text-lg">{feature.title}</CardTitle>
+                     <CardDescription className="text-sm">
                         {feature.description}
                      </CardDescription>
                   </CardHeader>
                   <CardContent>
-                     <Button
-                        onClick={() => navigate(feature.route)}
-                        className="w-full flex items-center justify-center gap-2"
-                        variant={feature.color === 'blue' ? 'default' : 'default'}
-                     >
-                        {feature.action}
-                        <ArrowRight className="h-4 w-4" />
-                     </Button>
+                     {feature.isQuestionPreview ? (
+                        <div className="space-y-3">
+                           <Button
+                              onClick={() => handleFeatureClick(feature)}
+                              className="w-full flex items-center justify-center gap-2"
+                              size="sm"
+                           >
+                              {feature.action}
+                              <ArrowRight className="h-4 w-4" />
+                           </Button>
+                        </div>
+                     ) : feature.isExternal ? (
+                        <div className="space-y-3">
+                           <Button
+                              onClick={() => handleFeatureClick(feature)}
+                              className="w-full flex items-center justify-center gap-2"
+                              variant="outline"
+                              size="sm"
+                           >
+                              <Github className="h-4 w-4" />
+                              {feature.action}
+                           </Button>
+                        </div>
+                     ) : (
+                        <Button
+                           onClick={() => handleFeatureClick(feature)}
+                           className="w-full flex items-center justify-center gap-2"
+                           size="sm"
+                        >
+                           {feature.action}
+                           <ArrowRight className="h-4 w-4" />
+                        </Button>
+                     )}
                   </CardContent>
                </Card>
             ))}
@@ -189,6 +237,77 @@ const Home = () => {
                      <Upload className="h-5 w-5" />
                      Start with Data Loading
                   </Button>
+               </div>
+            </CardContent>
+         </Card>
+
+         {/* Project Information Section */}
+         <Card className="bg-gradient-to-r from-gray-50 to-slate-50 border-gray-200">
+            <CardHeader>
+               <CardTitle className="text-2xl text-center flex items-center justify-center gap-2">
+                  <Github className="h-6 w-6" />
+                  Open Source Learning
+               </CardTitle>
+               <CardDescription className="text-center text-base">
+                  This is a complete open-source project designed for MongoDB aggregation pipeline learning
+               </CardDescription>
+            </CardHeader>
+            <CardContent>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                     <h3 className="font-semibold mb-4 flex items-center gap-2">
+                        <Star className="h-5 w-5 text-yellow-500" />
+                        What's Included
+                     </h3>
+                     <ul className="space-y-2 text-sm text-gray-600">
+                        <li className="flex items-center gap-2">
+                           <CheckCircle className="h-4 w-4 text-green-500" />
+                           Complete React frontend with modern UI
+                        </li>
+                        <li className="flex items-center gap-2">
+                           <CheckCircle className="h-4 w-4 text-green-500" />
+                           Node.js backend with MongoDB integration
+                        </li>
+                        <li className="flex items-center gap-2">
+                           <CheckCircle className="h-4 w-4 text-green-500" />
+                           20 structured learning questions
+                        </li>
+                        <li className="flex items-center gap-2">
+                           <CheckCircle className="h-4 w-4 text-green-500" />
+                           Sample data and setup scripts
+                        </li>
+                        <li className="flex items-center gap-2">
+                           <CheckCircle className="h-4 w-4 text-green-500" />
+                           Pipeline visualization and explanation
+                        </li>
+                     </ul>
+                  </div>
+                  <div>
+                     <h3 className="font-semibold mb-4 flex items-center gap-2">
+                        <GitFork className="h-5 w-5 text-blue-500" />
+                        Get Started
+                     </h3>
+                     <div className="space-y-3">
+                        <Button
+                           onClick={() => window.open('https://github.com/BuddhadebKoner/mongodb-aggregation-pipeline', '_blank')}
+                           className="w-full flex items-center justify-center gap-2"
+                           variant="outline"
+                        >
+                           <Github className="h-4 w-4" />
+                           View on GitHub
+                        </Button>
+                        <Button
+                           onClick={() => window.open('https://github.com/BuddhadebKoner/mongodb-aggregation-pipeline/fork', '_blank')}
+                           className="w-full flex items-center justify-center gap-2"
+                        >
+                           <GitFork className="h-4 w-4" />
+                           Fork Repository
+                        </Button>
+                        <p className="text-xs text-gray-500 text-center">
+                           Star ⭐ the repo if you find it helpful for learning!
+                        </p>
+                     </div>
+                  </div>
                </div>
             </CardContent>
          </Card>
